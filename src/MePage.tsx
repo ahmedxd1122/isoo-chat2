@@ -1,5 +1,6 @@
 import { useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
+import { useNavigate } from "react-router-dom"; // إذا كنت تستخدم React Router
 
 function LevelIcon({
   level,
@@ -41,6 +42,7 @@ function LevelIcon({
 export function MePage() {
   const currentUser = useQuery(api.auth.loggedInUser);
   const userProfile = useQuery(api.users.getUserProfile);
+  const navigate = useNavigate(); // للتنقل بين الصفحات
 
   if (!currentUser || userProfile === undefined) {
     return (
@@ -49,6 +51,42 @@ export function MePage() {
       </div>
     );
   }
+
+  // دالة للتعامل مع نقرات الأزرار
+  const handleButtonClick = (action: string) => {
+    switch (action) {
+      case 'charge':
+        // افتح modal أو انتقل لصفحة الشحن
+        navigate('/charge'); // أو window.open('/charge', '_blank')
+        break;
+      case 'stores':
+        navigate('/stores');
+        break;
+      case 'bag':
+        navigate('/bag');
+        break;
+      case 'level':
+        navigate('/level-info');
+        break;
+      case 'vip':
+        navigate('/vip-membership');
+        break;
+      case 'aristocracy':
+        navigate('/aristocracy');
+        break;
+      case 'joke-pro':
+        navigate('/joke-pro');
+        break;
+      case 'agency':
+        navigate('/agency');
+        break;
+      case 'settings':
+        navigate('/settings');
+        break;
+      default:
+        console.log('Action not defined');
+    }
+  };
 
   return (
     <main className="flex-grow pt-4 px-4 pb-4">
@@ -81,22 +119,25 @@ export function MePage() {
 
       <section className="mt-8 flex justify-around bg-white rounded-xl shadow-md p-4">
         <button
+          onClick={() => handleButtonClick('charge')}
           aria-label="الشحن"
-          className="flex flex-col items-center space-y-1 space-y-reverse text-purple-700 hover:text-purple-900 focus:outline-none"
+          className="flex flex-col items-center space-y-1 space-y-reverse text-purple-700 hover:text-purple-900 focus:outline-none transition-colors duration-200"
         >
           <i className="fas fa-bolt text-2xl"></i>
           <span className="text-xs font-semibold">الشحن</span>
         </button>
         <button
+          onClick={() => handleButtonClick('stores')}
           aria-label="المتاجر"
-          className="flex flex-col items-center space-y-1 space-y-reverse text-purple-700 hover:text-purple-900 focus:outline-none"
+          className="flex flex-col items-center space-y-1 space-y-reverse text-purple-700 hover:text-purple-900 focus:outline-none transition-colors duration-200"
         >
           <i className="fas fa-store text-2xl"></i>
           <span className="text-xs font-semibold">المتاجر</span>
         </button>
         <button
+          onClick={() => handleButtonClick('bag')}
           aria-label="الحقيبة"
-          className="flex flex-col items-center space-y-1 space-y-reverse text-purple-700 hover:text-purple-900 focus:outline-none"
+          className="flex flex-col items-center space-y-1 space-y-reverse text-purple-700 hover:text-purple-900 focus:outline-none transition-colors duration-200"
         >
           <i className="fas fa-shopping-bag text-2xl"></i>
           <span className="text-xs font-semibold">الحقيبة</span>
@@ -104,21 +145,30 @@ export function MePage() {
       </section>
 
       <section className="mt-8 grid grid-cols-2 gap-4">
-        <div className="flex items-center space-x-3 space-x-reverse bg-white rounded-xl shadow-md p-4">
+        <div 
+          onClick={() => handleButtonClick('level')}
+          className="flex items-center space-x-3 space-x-reverse bg-white rounded-xl shadow-md p-4 cursor-pointer hover:bg-purple-50 transition-colors duration-200"
+        >
           <i className="fas fa-layer-group text-purple-600 text-3xl"></i>
           <div>
             <h3 className="font-extrabold text-purple-700 text-sm">المستوى</h3>
             <p className="text-gray-600 text-xs">المستوى الحالي للمستخدم</p>
           </div>
         </div>
-        <div className="flex items-center space-x-3 space-x-reverse bg-white rounded-xl shadow-md p-4">
+        <div 
+          onClick={() => handleButtonClick('vip')}
+          className="flex items-center space-x-3 space-x-reverse bg-white rounded-xl shadow-md p-4 cursor-pointer hover:bg-purple-50 transition-colors duration-200"
+        >
           <i className="fas fa-crown text-yellow-400 text-3xl"></i>
           <div>
             <h3 className="font-extrabold text-purple-700 text-sm">VIP</h3>
             <p className="text-gray-600 text-xs">حالة المستخدم المميزة</p>
           </div>
         </div>
-        <div className="flex items-center space-x-3 space-x-reverse bg-white rounded-xl shadow-md p-4">
+        <div 
+          onClick={() => handleButtonClick('aristocracy')}
+          className="flex items-center space-x-3 space-x-reverse bg-white rounded-xl shadow-md p-4 cursor-pointer hover:bg-purple-50 transition-colors duration-200"
+        >
           <i className="fas fa-user-shield text-purple-800 text-3xl"></i>
           <div>
             <h3 className="font-extrabold text-purple-700 text-sm">
@@ -127,21 +177,30 @@ export function MePage() {
             <p className="text-gray-600 text-xs">مستوى النخبة الخاص</p>
           </div>
         </div>
-        <div className="flex items-center space-x-3 space-x-reverse bg-white rounded-xl shadow-md p-4">
+        <div 
+          onClick={() => handleButtonClick('joke-pro')}
+          className="flex items-center space-x-3 space-x-reverse bg-white rounded-xl shadow-md p-4 cursor-pointer hover:bg-purple-50 transition-colors duration-200"
+        >
           <i className="fas fa-laugh-beam text-green-500 text-3xl"></i>
           <div>
             <h3 className="font-extrabold text-purple-700 text-sm">مزحة PRO</h3>
             <p className="text-gray-600 text-xs">الوصول إلى مزحات احترافية</p>
           </div>
         </div>
-        <div className="flex items-center space-x-3 space-x-reverse bg-white rounded-xl shadow-md p-4">
+        <div 
+          onClick={() => handleButtonClick('agency')}
+          className="flex items-center space-x-3 space-x-reverse bg-white rounded-xl shadow-md p-4 cursor-pointer hover:bg-purple-50 transition-colors duration-200"
+        >
           <i className="fas fa-building text-indigo-600 text-3xl"></i>
           <div>
             <h3 className="font-extrabold text-purple-700 text-sm">الوكالة</h3>
             <p className="text-gray-600 text-xs">إدارة الوكالات الخاصة</p>
           </div>
         </div>
-        <div className="flex items-center space-x-3 space-x-reverse bg-white rounded-xl shadow-md p-4">
+        <div 
+          onClick={() => handleButtonClick('settings')}
+          className="flex items-center space-x-3 space-x-reverse bg-white rounded-xl shadow-md p-4 cursor-pointer hover:bg-purple-50 transition-colors duration-200"
+        >
           <i className="fas fa-cog text-purple-700 text-3xl"></i>
           <div>
             <h3 className="font-extrabold text-purple-700 text-sm">الإعدادات</h3>
