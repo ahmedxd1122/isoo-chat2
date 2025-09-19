@@ -1,6 +1,14 @@
 import { useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
-import { useNavigate } from "react-router-dom"; // إذا كنت تستخدم React Router
+import { useState } from "react";
+import { ChargePage } from "./ChargePage";
+import { VipPage } from "./VipPage";
+import { StorePage } from "./StorePage";
+import { BagPage } from "./BagPage";
+import { LevelPage } from "./LevelPage";
+import { AristocracyPage } from "./AristocracyPage";
+import { AgencyPage } from "./AgencyPage";
+import { SettingsPage } from "./SettingsPage";
 
 function LevelIcon({
   level,
@@ -42,7 +50,7 @@ function LevelIcon({
 export function MePage() {
   const currentUser = useQuery(api.auth.loggedInUser);
   const userProfile = useQuery(api.users.getUserProfile);
-  const navigate = useNavigate(); // للتنقل بين الصفحات
+  const [currentPage, setCurrentPage] = useState<string | null>(null);
 
   if (!currentUser || userProfile === undefined) {
     return (
@@ -52,41 +60,31 @@ export function MePage() {
     );
   }
 
-  // دالة للتعامل مع نقرات الأزرار
-  const handleButtonClick = (action: string) => {
-    switch (action) {
-      case 'charge':
-        // افتح modal أو انتقل لصفحة الشحن
-        navigate('/charge'); // أو window.open('/charge', '_blank')
-        break;
-      case 'stores':
-        navigate('/stores');
-        break;
-      case 'bag':
-        navigate('/bag');
-        break;
-      case 'level':
-        navigate('/level-info');
-        break;
-      case 'vip':
-        navigate('/vip-membership');
-        break;
-      case 'aristocracy':
-        navigate('/aristocracy');
-        break;
-      case 'joke-pro':
-        navigate('/joke-pro');
-        break;
-      case 'agency':
-        navigate('/agency');
-        break;
-      case 'settings':
-        navigate('/settings');
-        break;
-      default:
-        console.log('Action not defined');
-    }
-  };
+  // عرض الصفحات المختلفة
+  if (currentPage === "charge") {
+    return <ChargePage onBack={() => setCurrentPage(null)} />;
+  }
+  if (currentPage === "vip") {
+    return <VipPage onBack={() => setCurrentPage(null)} />;
+  }
+  if (currentPage === "stores") {
+    return <StorePage onBack={() => setCurrentPage(null)} />;
+  }
+  if (currentPage === "bag") {
+    return <BagPage onBack={() => setCurrentPage(null)} />;
+  }
+  if (currentPage === "level") {
+    return <LevelPage onBack={() => setCurrentPage(null)} />;
+  }
+  if (currentPage === "aristocracy") {
+    return <AristocracyPage onBack={() => setCurrentPage(null)} />;
+  }
+  if (currentPage === "agency") {
+    return <AgencyPage onBack={() => setCurrentPage(null)} />;
+  }
+  if (currentPage === "settings") {
+    return <SettingsPage onBack={() => setCurrentPage(null)} />;
+  }
 
   return (
     <main className="flex-grow pt-4 px-4 pb-4">
@@ -119,7 +117,7 @@ export function MePage() {
 
       <section className="mt-8 flex justify-around bg-white rounded-xl shadow-md p-4">
         <button
-          onClick={() => handleButtonClick('charge')}
+          onClick={() => setCurrentPage("charge")}
           aria-label="الشحن"
           className="flex flex-col items-center space-y-1 space-y-reverse text-purple-700 hover:text-purple-900 focus:outline-none transition-colors duration-200"
         >
@@ -127,7 +125,7 @@ export function MePage() {
           <span className="text-xs font-semibold">الشحن</span>
         </button>
         <button
-          onClick={() => handleButtonClick('stores')}
+          onClick={() => setCurrentPage("stores")}
           aria-label="المتاجر"
           className="flex flex-col items-center space-y-1 space-y-reverse text-purple-700 hover:text-purple-900 focus:outline-none transition-colors duration-200"
         >
@@ -135,7 +133,7 @@ export function MePage() {
           <span className="text-xs font-semibold">المتاجر</span>
         </button>
         <button
-          onClick={() => handleButtonClick('bag')}
+          onClick={() => setCurrentPage("bag")}
           aria-label="الحقيبة"
           className="flex flex-col items-center space-y-1 space-y-reverse text-purple-700 hover:text-purple-900 focus:outline-none transition-colors duration-200"
         >
@@ -146,7 +144,7 @@ export function MePage() {
 
       <section className="mt-8 grid grid-cols-2 gap-4">
         <div 
-          onClick={() => handleButtonClick('level')}
+          onClick={() => setCurrentPage("level")}
           className="flex items-center space-x-3 space-x-reverse bg-white rounded-xl shadow-md p-4 cursor-pointer hover:bg-purple-50 transition-colors duration-200"
         >
           <i className="fas fa-layer-group text-purple-600 text-3xl"></i>
@@ -156,7 +154,7 @@ export function MePage() {
           </div>
         </div>
         <div 
-          onClick={() => handleButtonClick('vip')}
+          onClick={() => setCurrentPage("vip")}
           className="flex items-center space-x-3 space-x-reverse bg-white rounded-xl shadow-md p-4 cursor-pointer hover:bg-purple-50 transition-colors duration-200"
         >
           <i className="fas fa-crown text-yellow-400 text-3xl"></i>
@@ -166,7 +164,7 @@ export function MePage() {
           </div>
         </div>
         <div 
-          onClick={() => handleButtonClick('aristocracy')}
+          onClick={() => setCurrentPage("aristocracy")}
           className="flex items-center space-x-3 space-x-reverse bg-white rounded-xl shadow-md p-4 cursor-pointer hover:bg-purple-50 transition-colors duration-200"
         >
           <i className="fas fa-user-shield text-purple-800 text-3xl"></i>
@@ -178,7 +176,7 @@ export function MePage() {
           </div>
         </div>
         <div 
-          onClick={() => handleButtonClick('joke-pro')}
+          onClick={() => setCurrentPage("joke-pro")}
           className="flex items-center space-x-3 space-x-reverse bg-white rounded-xl shadow-md p-4 cursor-pointer hover:bg-purple-50 transition-colors duration-200"
         >
           <i className="fas fa-laugh-beam text-green-500 text-3xl"></i>
@@ -188,7 +186,7 @@ export function MePage() {
           </div>
         </div>
         <div 
-          onClick={() => handleButtonClick('agency')}
+          onClick={() => setCurrentPage("agency")}
           className="flex items-center space-x-3 space-x-reverse bg-white rounded-xl shadow-md p-4 cursor-pointer hover:bg-purple-50 transition-colors duration-200"
         >
           <i className="fas fa-building text-indigo-600 text-3xl"></i>
@@ -198,7 +196,7 @@ export function MePage() {
           </div>
         </div>
         <div 
-          onClick={() => handleButtonClick('settings')}
+          onClick={() => setCurrentPage("settings")}
           className="flex items-center space-x-3 space-x-reverse bg-white rounded-xl shadow-md p-4 cursor-pointer hover:bg-purple-50 transition-colors duration-200"
         >
           <i className="fas fa-cog text-purple-700 text-3xl"></i>
@@ -210,4 +208,3 @@ export function MePage() {
       </section>
     </main>
   );
-}
